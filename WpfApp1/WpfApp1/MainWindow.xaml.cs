@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp1.Data;
+using WpfApp1.Pages;
 
 namespace WpfApp1
 {
@@ -23,6 +25,8 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
+            ManagerFrame.MainFrame = MainFrame;
+            MainFrame.Navigate(new PageRC());
         }
     }
 }
