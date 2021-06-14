@@ -64,7 +64,6 @@ namespace WpfApp1.Pages
 
             if (currentComplex != null)
             {
-                currentComplex = new ResidentialComplex();
                 currentComplex.Name = TBoxName.Text;
                 currentComplex.City = TBoxCity.Text;
                 currentComplex.Status = StatusBox.SelectedItem.ToString();
