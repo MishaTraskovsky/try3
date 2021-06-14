@@ -22,40 +22,131 @@ namespace WpfApp1.Pages
     /// </summary>
     public partial class PageRC : Page
     {
+        string status = String.Empty;
+        string city = String.Empty;
+
         public PageRC()
         {
             InitializeComponent();
 
+            StatusBox.Items.Add("план");
+            StatusBox.Items.Add("строительство");
+            StatusBox.Items.Add("реализация");
+
             try
             {
-                var entities = App1Entities.GetContext().
-                    ResidentialComplex.Where(r => !r.IsDeleted).
-                    OrderBy(q => q.Name).ThenBy(w => w.Status).ToList();
-                DGreedMain.ItemsSource = entities;
+                CityBox.ItemsSource = App1Entities.GetContext().
+                    ResidentialComplex.Where(q => !q.IsDeleted).
+                    Select(w => w.City).Distinct().ToList();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString(), "Ошибка подключения к БД", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
-            StatusBox.Items.Add("План");
-            StatusBox.Items.Add("Строительство");
-            StatusBox.Items.Add("Реализация");
         }
 
         private void StatusBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            if(e.AddedItems.Count > 0)
+            {
+                status = StatusBox.SelectedItem.ToString();
+                Filtration();
+            }
         }
 
         private void CityBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            if(e.AddedItems.Count > 0)
+            {
+                city = CityBox.SelectedItem.ToString();
+                Filtration();
+            }
         }
 
         private void BtnClearFilters_Click(object sender, RoutedEventArgs e)
         {
+            status = string.Empty;
+            city = string.Empty;
+            StatusBox.SelectedItem = null;
+            CityBox.SelectedItem = null;
 
+            try
+            {
+                DGreedMain.ItemsSource = App1Entities.GetContext().
+                    ResidentialComplex.Where(r => !r.IsDeleted).
+                    OrderBy(q => q.Name).ThenBy(w => w.Status).ToList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Ошибка подключения к БД", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void Filtration()
+        {
+            try
+            {
+                if (status != string.Empty && city != string.Empty)
+                {
+                    DGreedMain.ItemsSource = App1Entities.GetContext().
+                        ResidentialComplex.Where(q =>
+                        q.Status == status &&
+                        q.City == city &&
+                        !q.IsDeleted).ToList();
+                }
+                if(status != string.Empty && city == string.Empty)
+                {
+                    DGreedMain.ItemsSource = App1Entities.GetContext().
+                        ResidentialComplex.Where(q =>
+                        q.Status == status &&
+                        !q.IsDeleted).ToList();
+                }
+                if(status == string.Empty && city != string.Empty)
+                {
+                    DGreedMain.ItemsSource = App1Entities.GetContext().
+                        ResidentialComplex.Where(q =>
+                        q.City == city &&
+                        !q.IsDeleted).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Ошибка подключения к БД", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void BtnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            ManagerFrame.MainFrame.Navigate(new PageRCEdit(null));
+        }
+
+        private void BtnUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            if (DGreedMain.SelectedItem != null)
+                ManagerFrame.MainFrame.Navigate(new PageRCEdit(
+                    (ResidentialComplex)DGreedMain.SelectedItem));
+        }
+
+        private void BtnDelete_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Page_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            try
+            {
+                App1Entities.GetContext().ChangeTracker.Entries().ToList().
+                    ForEach(q => q.Reload());
+                DGreedMain.ItemsSource = App1Entities.GetContext().
+                    ResidentialComplex.Where(r => !r.IsDeleted).
+                    OrderBy(q => q.Name).ThenBy(w => w.Status).ToList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Ошибка подключения к БД", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

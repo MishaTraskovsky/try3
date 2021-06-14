@@ -7,7 +7,7 @@
       mc:Ignorable="d" 
       Background="White"
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="PageRC">
+      Title="PageRC" IsVisibleChanged="Page_IsVisibleChanged">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -18,7 +18,7 @@
             <ColumnDefinition Width="141*"/>
             <ColumnDefinition Width="59*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical" Grid.Column="1" Margin="3,0,10,217">
+        <StackPanel Orientation="Vertical" Grid.Column="1">
             <TextBlock Text="Статус"/>
             <ComboBox Name="StatusBox" SelectionChanged="StatusBox_SelectionChanged"/>
             <TextBlock Text="Город"/>
@@ -26,6 +26,11 @@
             <Button Name="BtnClearFilters" Content="Сбросить фильтры" Click="BtnClearFilters_Click"/>
         </StackPanel>
 
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <Button Name="BtnAdd" Content="Добавить"  Click="BtnAdd_Click"/> 
+            <Button Name="BtnUpdate" Content="Редактировать" Click="BtnUpdate_Click"/> 
+            <Button Name="BtnDelete" Content="Удалить" Click="BtnDelete_Click"/> 
+        </StackPanel>
         <DataGrid Name="DGreedMain" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,0,2,6" IsTextSearchEnabled="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Название ЖК" Binding="{Binding Name}"/>
