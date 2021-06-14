@@ -72,7 +72,6 @@ namespace WpfApp1.Pages
                 currentComplex.ComplexValueAdded = intValue;
                 try
                 {
-                    App1Entities.GetContext().ResidentialComplex.Add(currentComplex);
                     App1Entities.GetContext().SaveChanges();
                     MessageBox.Show("Данные успешно обновлены!", "Обновление данных", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
@@ -93,6 +92,7 @@ namespace WpfApp1.Pages
 
                 try
                 {
+                    App1Entities.GetContext().ResidentialComplex.Add(currentComplex);
                     App1Entities.GetContext().SaveChanges();
                     MessageBox.Show("Данные успешно добавлены!", "Добавление данных", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
