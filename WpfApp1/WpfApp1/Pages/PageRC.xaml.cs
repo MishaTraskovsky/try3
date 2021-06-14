@@ -25,6 +25,7 @@ namespace WpfApp1.Pages
         string status = String.Empty;
         string city = String.Empty;
 
+        //Инициализация компонентов
         public PageRC()
         {
             InitializeComponent();
@@ -41,28 +42,32 @@ namespace WpfApp1.Pages
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "Ошибка подключения к БД", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.ToString(), "Ошибка подключения к БД",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
+        //Обработка взаимодействия с <ComboBox> - фильтрация по статусу
         private void StatusBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(e.AddedItems.Count > 0)
+            if (e.AddedItems.Count > 0)
             {
                 status = StatusBox.SelectedItem.ToString();
                 Filtration();
             }
         }
 
+        //Обработка взаимодействия с <ComboBox> - фильтрация по городу
         private void CityBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(e.AddedItems.Count > 0)
+            if (e.AddedItems.Count > 0)
             {
                 city = CityBox.SelectedItem.ToString();
                 Filtration();
             }
         }
 
+        //Обработка нажатия на кнопку "Очистить фильтры"
         private void BtnClearFilters_Click(object sender, RoutedEventArgs e)
         {
             status = string.Empty;
@@ -78,10 +83,12 @@ namespace WpfApp1.Pages
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "Ошибка подключения к БД", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.ToString(), "Ошибка подключения к БД", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
+        //Метод фильтрации данных в таблице
         private void Filtration()
         {
             try
@@ -94,14 +101,14 @@ namespace WpfApp1.Pages
                         q.City == city &&
                         !q.IsDeleted).ToList();
                 }
-                if(status != string.Empty && city == string.Empty)
+                if (status != string.Empty && city == string.Empty)
                 {
                     DGreedMain.ItemsSource = App1Entities.GetContext().
                         ResidentialComplex.Where(q =>
                         q.Status == status &&
                         !q.IsDeleted).ToList();
                 }
-                if(status == string.Empty && city != string.Empty)
+                if (status == string.Empty && city != string.Empty)
                 {
                     DGreedMain.ItemsSource = App1Entities.GetContext().
                         ResidentialComplex.Where(q =>
@@ -111,16 +118,18 @@ namespace WpfApp1.Pages
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "Ошибка подключения к БД", 
+                MessageBox.Show(ex.ToString(), "Ошибка подключения к БД",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
+        //Обработка наатия на кнопку "Добавить" - переход на страницу интерфейса ЖК
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
             ManagerFrame.MainFrame.Navigate(new PageRCEdit(null));
         }
 
+        //Обработка наатия на кнопку "Редактировать" - переход на страницу интерфейса ЖК
         private void BtnUpdate_Click(object sender, RoutedEventArgs e)
         {
             if (DGreedMain.SelectedItem != null)
@@ -128,24 +137,50 @@ namespace WpfApp1.Pages
                     (ResidentialComplex)DGreedMain.SelectedItem));
         }
 
+        //Обработка наатия на кнопку "Удалить" - удаление выбранной записи
         private void BtnDelete_Click(object sender, RoutedEventArgs e)
         {
+            if (DGreedMain.SelectedItem != null)
+            {
+                try
+                {
+                    ResidentialComplex forRemove = (ResidentialComplex)
+                        DGreedMain.SelectedItem;
+                    forRemove.IsDeleted = true;
+                    App1Entities.GetContext().SaveChanges();
 
+                    App1Entities.GetContext().ChangeTracker.Entries().ToList().
+                                           ForEach(q => q.Reload());
+                    DGreedMain.ItemsSource = App1Entities.GetContext().
+                        ResidentialComplex.Where(r => !r.IsDeleted).
+                        OrderBy(q => q.Name).ThenBy(w => w.Status).ToList();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString(), "Ошибка подключения к БД", 
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
-
+        
+        //Автоматическое обновление содержания таблицы при ее отображении
         private void Page_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             try
             {
-                App1Entities.GetContext().ChangeTracker.Entries().ToList().
-                    ForEach(q => q.Reload());
-                DGreedMain.ItemsSource = App1Entities.GetContext().
-                    ResidentialComplex.Where(r => !r.IsDeleted).
-                    OrderBy(q => q.Name).ThenBy(w => w.Status).ToList();
+                if (Visibility == Visibility.Visible)
+                {
+                    App1Entities.GetContext().ChangeTracker.Entries().ToList().
+                        ForEach(q => q.Reload());
+                    DGreedMain.ItemsSource = App1Entities.GetContext().
+                        ResidentialComplex.Where(r => !r.IsDeleted).
+                        OrderBy(q => q.Name).ThenBy(w => w.Status).ToList();
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "Ошибка подключения к БД", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.ToString(), "Ошибка подключения к БД", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

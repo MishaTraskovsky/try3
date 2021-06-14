@@ -101,6 +101,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Pages\PageHouse.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\PageRC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -109,13 +113,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\PageWelcome.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pages\PageHouse.xaml.cs">
+      <DependentUpon>PageHouse.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\PageRC.xaml.cs">
       <DependentUpon>PageRC.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\PageRCEdit.xaml.cs">
       <DependentUpon>PageRCEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PageWelcome.xaml.cs">
+      <DependentUpon>PageWelcome.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

@@ -12,21 +12,28 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp1;
 using WpfApp1.Data;
-using WpfApp1.Pages;
-
-namespace WpfApp1
+namespace WpfApp1.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для PageWelcome.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class PageWelcome : Page
     {
-        public MainWindow()
+        public PageWelcome()
         {
             InitializeComponent();
-            ManagerFrame.MainFrame = MainFrame;
-            MainFrame.Navigate(new PageWelcome());
+        }
+
+        private void BtnHouseListClick(object sender, RoutedEventArgs e)
+        {
+            ManagerFrame.MainFrame.Navigate(new PageHouse());
+        }
+
+        private void BtnRCListClick(object sender, RoutedEventArgs e)
+        {
+            ManagerFrame.MainFrame.Navigate(new PageRC());
         }
     }
 }

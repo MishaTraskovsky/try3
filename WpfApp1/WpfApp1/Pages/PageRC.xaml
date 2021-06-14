@@ -31,7 +31,7 @@
             <Button Name="BtnUpdate" Content="Редактировать" Click="BtnUpdate_Click"/> 
             <Button Name="BtnDelete" Content="Удалить" Click="BtnDelete_Click"/> 
         </StackPanel>
-        <DataGrid Name="DGreedMain" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,0,2,6" IsTextSearchEnabled="True">
+        <DataGrid Name="DGreedMain" ColumnWidth="*" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,0,2,6" IsTextSearchEnabled="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Название ЖК" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="Статус" Binding="{Binding Status}"/>

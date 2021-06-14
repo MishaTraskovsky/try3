@@ -27,11 +27,11 @@
                 <TextBlock Text="Добавочная стоимость" Margin="10"/>
             </StackPanel>
             <StackPanel Orientation="Vertical">
-                <TextBox Name="TBoxName" MaxLength="255" Width="170" Margin="10"/>
-                <TextBox Name="TBoxCity" MaxLength="255" Width="170" Margin="10"/>
-                <ComboBox Name="StatusBox"/>
-                <TextBox Name="TBoxBCost" Width="170" Margin="13"/>
-                <TextBox Name="TBoxComplexValue" Width="170" Margin="4"/>
+                <TextBox Name="TBoxName" Text="{Binding Name}" MaxLength="255" Width="170" Margin="10"/>
+                <TextBox Name="TBoxCity" Text="{Binding City}" MaxLength="255" Width="170" Margin="10"/>
+                <ComboBox Name="StatusBox" SelectedIndex="0"/>
+                <TextBox Name="TBoxBCost" Text="{Binding BuildingCost}" Width="170" Margin="13"/>
+                <TextBox Name="TBoxComplexValue"  Text="{Binding ComplexValueAdded}" Width="170" Margin="4"/>
             </StackPanel>
         </StackPanel>
 
